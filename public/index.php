@@ -1,3 +1,4 @@
 <?php 
 
-echo "Home Page";
+// Bootstrap File
+require_once __DIR__ . '/../Bootstrap/app.php';
