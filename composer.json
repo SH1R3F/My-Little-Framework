@@ -6,6 +6,9 @@
     },
     "require": {
         "vlucas/phpdotenv": "^3.3",
-        "league/container": "^2.4"
+        "league/container": "^2.4",
+        "league/route": "^3.0",
+        "zendframework/zend-diactoros": "^2.1",
+        "zendframework/zend-httphandlerrunner": "^1.1"
     }
 }

@@ -14,4 +14,5 @@ try{
 } catch(InvalidPathException $e){
     die('Cannot Find .env File');
 }
-var_dump(getenv('APP_NAME'));
+
+require_once __DIR__ . '/container.php';
