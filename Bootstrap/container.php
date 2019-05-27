@@ -5,6 +5,7 @@ use League\Route\RouteCollection;
 use App\Providers\AppServiceProvider;
 use League\Route\Http\Exception\NotFoundException;
 use League\Container\ReflectionContainer;
+use App\Providers\ViewServiceProvider;
 
 $container = new Container;
 
@@ -14,6 +15,7 @@ $container->delegate(
 );
 
 $container->addServiceProvider(new AppServiceProvider);
+$container->addServiceProvider(new ViewServiceProvider);
 
 $router = $container->get(RouteCollection::class);
 
