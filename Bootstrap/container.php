@@ -4,8 +4,15 @@ use League\Container\Container;
 use League\Route\RouteCollection;
 use App\Providers\AppServiceProvider;
 use League\Route\Http\Exception\NotFoundException;
+use League\Container\ReflectionContainer;
 
 $container = new Container;
+
+// For Autowiring
+$container->delegate(
+    new ReflectionContainer
+);
+
 $container->addServiceProvider(new AppServiceProvider);
 
 $router = $container->get(RouteCollection::class);
