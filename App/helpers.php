@@ -6,3 +6,25 @@ if (!function_exists('base_path')) {
         return __DIR__ . '/..//' . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
+
+
+if(!function_exists('env')){
+    function env($var, $default = false){
+        $value = getenv($var);
+
+        if ($value === false) {
+            return $default;
+        }
+
+        switch (strtolower($value)) {
+            case 'true':
+                return true;
+                break;
+            case 'false':
+                return false;
+                break;
+            default:
+                return $value;
+        }
+    }
+}
