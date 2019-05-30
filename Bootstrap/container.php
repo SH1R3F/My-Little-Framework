@@ -1,11 +1,13 @@
 <?php 
 
+use App\Config\Config;
 use League\Container\Container;
 use League\Route\RouteCollection;
 use App\Providers\AppServiceProvider;
-use League\Route\Http\Exception\NotFoundException;
-use League\Container\ReflectionContainer;
 use App\Providers\ViewServiceProvider;
+use App\Providers\ConfigServiceProvider;
+use League\Container\ReflectionContainer;
+use League\Route\Http\Exception\NotFoundException;
 
 $container = new Container;
 
@@ -16,6 +18,7 @@ $container->delegate(
 
 $container->addServiceProvider(new AppServiceProvider);
 $container->addServiceProvider(new ViewServiceProvider);
+$container->addServiceProvider(new ConfigServiceProvider);
 
 $router = $container->get(RouteCollection::class);
 
