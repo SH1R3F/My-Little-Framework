@@ -1,26 +1,24 @@
 <?php 
 
-use App\Config\Config;
-use League\Container\Container;
-use League\Route\RouteCollection;
-use App\Providers\AppServiceProvider;
-use App\Providers\ViewServiceProvider;
-use App\Providers\ConfigServiceProvider;
-use League\Container\ReflectionContainer;
-use League\Route\Http\Exception\NotFoundException;
-
-$container = new Container;
+$container = new League\Container\Container;
 
 // For Autowiring
 $container->delegate(
-    new ReflectionContainer
+    new League\Container\ReflectionContainer
 );
 
-$container->addServiceProvider(new AppServiceProvider);
-$container->addServiceProvider(new ViewServiceProvider);
-$container->addServiceProvider(new ConfigServiceProvider);
 
-$router = $container->get(RouteCollection::class);
+$container->addServiceProvider(new App\Providers\ConfigServiceProvider);
+
+// Loading Service Providers From Config/App.php
+$config = $container->get(App\Config\Config::class);
+foreach ($config->get('app.providers') as $provider) {
+    $container->addServiceProvider(new $provider);
+}
+
+
+
+$router = $container->get(League\Route\RouteCollection::class);
 
 require_once base_path('/routes/web.php');
 
@@ -29,7 +27,7 @@ try{
         $container->get('request'),
         $container->get('response')
     );
-} catch(NotFoundException $e) {
+} catch(League\Route\Http\Exception\NotFoundException $e) {
     // Route does not exist.
     die('404 not found');
 }
