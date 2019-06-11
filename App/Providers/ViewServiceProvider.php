@@ -8,6 +8,7 @@ use App\Config\Config;
 use Twig\Loader\FilesystemLoader;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Twig\Extension\DebugExtension;
+use App\Views\Extensions\PathExtenstion;
 
 class ViewServiceProvider extends AbstractServiceProvider
 {
@@ -31,7 +32,7 @@ class ViewServiceProvider extends AbstractServiceProvider
                 'debug' => $config->get('app.APP_DEBUG')
             ]);
 
-            if ($config->get('app.APP_DEBUG')) { // This time will be loaded from config cache
+            if ($config->get('app.APP_DEBUG')) {
                 $twig->addExtension(new DebugExtension());
             }
 

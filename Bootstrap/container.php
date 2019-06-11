@@ -1,4 +1,5 @@
-<?php 
+<?php
+use Doctrine\ORM\EntityManager;
 
 $container = new League\Container\Container;
 
@@ -15,8 +16,6 @@ $config = $container->get(App\Config\Config::class);
 foreach ($config->get('app.providers') as $provider) {
     $container->addServiceProvider(new $provider);
 }
-
-
 
 $router = $container->get(League\Route\RouteCollection::class);
 

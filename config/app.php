@@ -8,7 +8,8 @@ return [
     // Registering Service Providers
     'providers' => [
         'App\Providers\AppServiceProvider',
-        'App\Providers\ViewServiceProvider'
+        'App\Providers\ViewServiceProvider',
+        'App\Providers\DatabaseServiceProvider'
     ]
 
 

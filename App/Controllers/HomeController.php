@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Views\View;
+use Doctrine\ORM\EntityManager;
 
 class HomeController
 {
