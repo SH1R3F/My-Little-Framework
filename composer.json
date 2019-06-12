@@ -14,6 +14,7 @@
         "zendframework/zend-diactoros": "^2.1",
         "zendframework/zend-httphandlerrunner": "^1.1",
         "twig/twig": "^2.0",
-        "doctrine/orm": "^2.6"
+        "doctrine/orm": "^2.6",
+        "vlucas/valitron": "^1.4"
     }
 }

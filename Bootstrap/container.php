@@ -1,5 +1,6 @@
 <?php
 use Doctrine\ORM\EntityManager;
+use App\Exceptions\Handler;
 
 $container = new League\Container\Container;
 
@@ -26,7 +27,6 @@ try{
         $container->get('request'),
         $container->get('response')
     );
-} catch(League\Route\Http\Exception\NotFoundException $e) {
-    // Route does not exist.
-    die('404 not found');
+} catch(Exception $e) {
+    $response = (new Handler($e))->respond();
 }
