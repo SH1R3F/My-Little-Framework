@@ -1,7 +1,7 @@
 <?php 
 
 return [
-    'APP_NAME' => 'My Little Framework',
+    'name' => env('APP_NAME', false),
     'APP_DEBUG' => env('APP_DEBUG', false),
 
 
@@ -9,7 +9,8 @@ return [
     'providers' => [
         'App\Providers\AppServiceProvider',
         'App\Providers\ViewServiceProvider',
-        'App\Providers\DatabaseServiceProvider'
+        'App\Providers\DatabaseServiceProvider',
+        'App\Providers\ViewShareServiceProvider',
     ]
 
 
