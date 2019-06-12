@@ -1,6 +1,6 @@
 <?php
-use Doctrine\ORM\EntityManager;
 use App\Exceptions\Handler;
+use App\Sessions\SessionInterface;
 
 $container = new League\Container\Container;
 

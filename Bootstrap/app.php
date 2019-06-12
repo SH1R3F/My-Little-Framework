@@ -1,16 +1,15 @@
 <?php
 
-use Dotenv\Dotenv;
-use Dotenv\Exception\InvalidPathException;
+session_start();
 
 // Composer autoloading
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Environment File Initializing
 try{
-    $dotenv = Dotenv::create(base_path());
+    $dotenv = Dotenv\Dotenv::create(base_path());
     $dotenv->load();
-} catch(InvalidPathException $e){
+} catch(Dotenv\Exception\InvalidPathException $e){
     die('Cannot Find .env File');
 }
 

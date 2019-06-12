@@ -11,7 +11,7 @@ return [
         'App\Providers\ViewServiceProvider',
         'App\Providers\DatabaseServiceProvider',
         'App\Providers\ViewShareServiceProvider',
+        'App\Providers\SessionServiceProvider'
     ]
-
 
 ];
