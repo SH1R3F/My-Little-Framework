@@ -23,7 +23,7 @@ abstract class Controller
         $validator->mapFieldsRules($rules);
 
         if (!$validator->validate()) {
-            throw new ValidationException($validator->errors());
+            throw new ValidationException($request, $validator->errors());
         }
 
         return $request->getParsedBody();

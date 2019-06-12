@@ -1,6 +1,4 @@
 <?php
-use App\Exceptions\Handler;
-use App\Sessions\SessionInterface;
 
 $container = new League\Container\Container;
 
@@ -28,5 +26,8 @@ try{
         $container->get('response')
     );
 } catch(Exception $e) {
-    $response = (new Handler($e))->respond();
+    $response = (new App\Exceptions\Handler(
+        $e,
+        $container->get(App\Sessions\SessionInterface::class)
+    ))->respond();
 }
