@@ -30,10 +30,22 @@ class Auth
             return false;
         }
 
+        if ($this->hasher->needsRehash($user->password)) {
+            $this->rehashPassword($user, $password);
+        }
+
         $this->setUserSession($user);
 
         return true;
 
+    }
+
+    private function rehashPassword($user, $password)
+    {
+        $this->db->getRepository(User::class)->find($user->id)->update([
+            'password' => $this->hasher->create($password)
+        ]);
+        $this->db->flush();
     }
 
     private function fetchUserByEmail($email)

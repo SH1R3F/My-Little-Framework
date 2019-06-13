@@ -13,4 +13,11 @@ abstract class Model
     {
         return property_exists($this, $name) ? true : false;
     }
+
+    public function update(array $data)
+    {
+        foreach ($data as $column => $value) {
+            $this->$column = $value;
+        }
+    }
 }
