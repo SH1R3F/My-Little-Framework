@@ -10,10 +10,10 @@ return [
         'App\Providers\AppServiceProvider',
         'App\Providers\ViewServiceProvider',
         'App\Providers\DatabaseServiceProvider',
-        'App\Providers\ViewShareServiceProvider',
         'App\Providers\SessionServiceProvider',
         'App\Providers\HasherServiceProvider',
-        'App\Providers\AuthServiceProvider'
+        'App\Providers\AuthServiceProvider',
+        'App\Providers\ViewShareServiceProvider'
     ],
 
 

@@ -58,6 +58,11 @@ class Auth
         $this->session->set($this->key(), $user->id);
     }
 
+    public function check()
+    {
+        return $this->hasUserInSession();
+    }
+
     public function hasUserInSession()
     {
         return $this->session->exists($this->key());

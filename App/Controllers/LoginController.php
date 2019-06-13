@@ -39,7 +39,7 @@ class LoginController extends Controller
             die("Failed");
         }
 
-        return redirect($this->route->getNamedRoute('dashboard')->getPath());
+        return redirect($this->route->getNamedRoute('home')->getPath());
 
     }
 
