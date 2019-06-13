@@ -13,13 +13,14 @@ return [
         'App\Providers\ViewShareServiceProvider',
         'App\Providers\SessionServiceProvider',
         'App\Providers\HasherServiceProvider',
-        'App\Providers\AuthServiceProvider',
+        'App\Providers\AuthServiceProvider'
     ],
 
 
     'middleware' => [
         'App\middleware\ShareValidationErrors',
         'App\middleware\ClearValidationErrors',
+        'App\middleware\Authenticate'
     ]
 
 ];

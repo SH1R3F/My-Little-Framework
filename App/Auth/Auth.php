@@ -2,6 +2,7 @@
 
 namespace App\Auth;
 
+use Exception;
 use App\Models\User;
 use Doctrine\ORM\EntityManager;
 use App\Hashing\HasherInterface;
@@ -10,9 +11,10 @@ use App\Sessions\SessionInterface;
 class Auth
 {
 
-    protected $db;
-    protected $session;
-    protected $hasher;
+    private $db;
+    private $session;
+    private $hasher;
+    private $user;
 
     public function __construct(EntityManager $db, SessionInterface $session, HasherInterface $hasher)
     {
@@ -23,7 +25,7 @@ class Auth
 
     public function attempt($email, $password)
     {
-        $user = $this->fetchUser($email);
+        $user = $this->fetchUserByEmail($email);
         if (!$user || !$this->hasValidCredentials($user, $password)) {
             return false;
         }
@@ -34,21 +36,49 @@ class Auth
 
     }
 
-    public function fetchUser($email)
+    private function fetchUserByEmail($email)
     {
         return $this->db->getRepository(User::class)->findOneBy([
             'email' => $email
         ]);
     }
 
-    public function hasValidCredentials($user, $password)
+    private function fetchUserById($id)
+    {
+        return $this->db->getRepository(User::class)->find($id);
+    }
+
+    private function hasValidCredentials($user, $password)
     {
         return $this->hasher->check($password, $user->password);
     }
 
-    public function setUserSession($user)
+    private function setUserSession($user)
     {
-        $this->session->set('id', $user->id);
+        $this->session->set($this->key(), $user->id);
     }
 
+    public function hasUserInSession()
+    {
+        return $this->session->exists($this->key());
+    }
+    
+    public function setUserFromSession()
+    {
+        $user = $this->fetchUserById($this->session->get($this->key()));
+        if (!$user) {
+            throw new Exception();
+        }
+        $this->user = $user;
+    }
+
+    public function user()
+    {
+        return $this->user;
+    }
+
+    private function key()
+    {
+        return 'id';
+    }
 }
