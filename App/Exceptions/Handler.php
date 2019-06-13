@@ -35,6 +35,6 @@ class Handler
 
     public function unhandledException(\Exception $exception)
     {
-        die((new \ReflectionClass($exception))->getShortName());
+        die($exception->getMessage());
     }
 }

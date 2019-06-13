@@ -11,7 +11,9 @@ return [
         'App\Providers\ViewServiceProvider',
         'App\Providers\DatabaseServiceProvider',
         'App\Providers\ViewShareServiceProvider',
-        'App\Providers\SessionServiceProvider'
+        'App\Providers\SessionServiceProvider',
+        'App\Providers\HasherServiceProvider',
+        'App\Providers\AuthServiceProvider',
     ],
 
 
