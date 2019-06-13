@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="row justify-content-center">
-        <form action="/auth/login" class="col-sm-10 col-md-8 mt-5" method="post">
+        <form action="/auth/login" class="col-sm-10 col-md-8" method="post">
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
                 <input class="form-control{{ errors.email ? ' is-invalid' : '' }}" id="exampleInputEmail1" name="email" placeholder="Enter email" type="text" value="{{ old.email }}">

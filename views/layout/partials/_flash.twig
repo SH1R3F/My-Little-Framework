@@ -1,0 +1,7 @@
+{% if flash.has('error') %}
+    <div class="row justify-content-center">
+        <div class="alert alert-danger col-sm-10 col-md-8">
+            {{ flash.get('error') }}
+        </div>
+    </div>
+{% endif %}

@@ -23,8 +23,8 @@ class Authenticate
             try{
                 $this->auth->setUserFromSession();
             } catch (Exception $e) {
-                // Log out
-                die('Err');
+                // user does not exist in database log me out and redirect to log in page
+                die("I'm Gonna log you out");
             }
         }
 
