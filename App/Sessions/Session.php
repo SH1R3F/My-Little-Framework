@@ -24,7 +24,7 @@ class Session implements SessionInterface
 
     public function clear(...$keys)
     {
-        foreach ($key as $key) {
+        foreach ($keys as $key) {
             unset($_SESSION[$key]);
         }
     }

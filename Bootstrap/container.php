@@ -18,6 +18,7 @@ foreach ($config->get('app.providers') as $provider) {
 
 $router = $container->get(League\Route\RouteCollection::class);
 
+require_once base_path('/App/middleware/middleware.php');
 require_once base_path('/routes/web.php');
 
 try{
