@@ -14,6 +14,7 @@ return [
         'App\Providers\HasherServiceProvider',
         'App\Providers\AuthServiceProvider',
         'App\Providers\FlashServiceProvider',
+        'App\Providers\CsrfServiceProvider',
         'App\Providers\ViewShareServiceProvider'
     ],
 
