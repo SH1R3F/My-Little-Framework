@@ -40,6 +40,11 @@ class Auth
 
     }
 
+    public function logout()
+    {
+        return $this->session->clear($this->key());
+    }
+
     private function rehashPassword($user, $password)
     {
         $this->db->getRepository(User::class)->find($user->id)->update([

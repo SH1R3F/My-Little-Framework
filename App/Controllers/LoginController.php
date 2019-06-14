@@ -47,4 +47,11 @@ class LoginController extends Controller
 
     }
 
+    public function logout($request, $response)
+    {
+        $this->auth->logout();
+
+        return redirect($this->route->getNamedRoute('auth.login')->getPath());
+    }
+
 }
