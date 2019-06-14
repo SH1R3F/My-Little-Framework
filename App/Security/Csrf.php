@@ -29,6 +29,11 @@ class Csrf
         return $token;
     }
 
+    public function tokenIsValid($token)
+    {
+        return $token === $this->session->get($this->key());
+    }
+
     private function getTokenFromSession()
     {
         return $this->session->get($this->key());

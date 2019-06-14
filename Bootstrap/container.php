@@ -29,6 +29,8 @@ try{
 } catch(Exception $e) {
     $response = (new App\Exceptions\Handler(
         $e,
-        $container->get(App\Sessions\SessionInterface::class)
+        $container->get(App\Sessions\SessionInterface::class),
+        $container->get('response'),
+        $container->get(App\Views\View::class)
     ))->respond();
 }
