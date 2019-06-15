@@ -1,16 +1,18 @@
-<?php 
-
+<?php
 
 $router->get('/', 'App\Controllers\HomeController::index')->setName('home');
 
-$router->group('/auth', function ($router) {
+$router->get('/dashboard', 'App\Controllers\HomeController::dashboard')->setName('dashboard')->middleware($container->get(App\middleware\Authenticated::class));
 
-    $router->get('/login', 'App\Controllers\Auth\LoginController::showLoginForm')->setName('auth.login');
-    $router->post('/login', 'App\Controllers\Auth\LoginController::authenticate');
 
-    $router->post('/logout', 'App\Controllers\Auth\LoginController::logout')->setName('auth.logout');
+$router->group('/auth', function ($router) use ($container) {
 
-    $router->get('/register', 'App\Controllers\Auth\RegisterController::showRegisterationForm')->setName('auth.register');
-    $router->post('/register', 'App\Controllers\Auth\RegisterController::register');
+    $router->get('/login', 'App\Controllers\Auth\LoginController::showLoginForm')->setName('auth.login')->middleware($container->get(App\middleware\Guest::class));
+    $router->post('/login', 'App\Controllers\Auth\LoginController::authenticate')->middleware($container->get(App\middleware\Guest::class));
+
+    $router->post('/logout', 'App\Controllers\Auth\LoginController::logout')->setName('auth.logout')->middleware($container->get(App\middleware\Authenticated::class));
+
+    $router->get('/register', 'App\Controllers\Auth\RegisterController::showRegisterationForm')->setName('auth.register')->middleware($container->get(App\middleware\Guest::class));
+    $router->post('/register', 'App\Controllers\Auth\RegisterController::register')->middleware($container->get(App\middleware\Guest::class));
 
 });

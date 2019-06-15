@@ -25,4 +25,10 @@ class HomeController extends Controller
             'user' => $this->auth->user()
         ]);
     }
+
+    public function dashboard($request, $response)
+    {
+        return $this->view->render($response, 'dashboard.twig');
+    }
+
 }
