@@ -58,7 +58,7 @@ class Auth
         $this->cookie->set('rememberme', $this->rememberme->cookieValue($identifier, $token));
         
         // Update user
-        $this->db->getRepository(User::class)->find($user->id)->update([
+        $this->fetchUserById($user->id)->update([
             'remember_token' => hash('sha256', $token),
             'remember_identifier' => $identifier
         ]);
@@ -85,17 +85,10 @@ class Auth
 
             if (!$this->rememberme->validateToken($user->remember_token, $token)) {
 
-                $this->db->getRepository(User::class)->find($user->id)->update([
-                    'remember_identifier' => null,
-                    'remember_token' => null
-                ]);
-
-                $this->db->flush();
-
-                $this->cookie->clear('rememberme');
+                $this->clearUserRememberMe($user);
 
                 return; 
-                
+
             }
 
             $this->setUserSession($user);
@@ -103,12 +96,26 @@ class Auth
 
     public function logout()
     {
-        return $this->session->clear($this->key());
+        $this->clearUserTokens($this->user);
+        $this->cookie->clear('rememberme');
+        $this->session->clear($this->key());
+    }
+
+    private function clearUserTokens($user)
+    {
+        $this->fetchUserById($user->id)->update([
+            'remember_identifier' => null,
+            'remember_token' => null
+        ]);
+
+        $this->db->flush();
+
+        $this->cookie->clear('rememberme');
     }
 
     private function rehashPassword($user, $password)
     {
-        $this->db->getRepository(User::class)->find($user->id)->update([
+        $this->fetchUserById($user->id)->update([
             'password' => $this->hasher->create($password)
         ]);
         $this->db->flush();
