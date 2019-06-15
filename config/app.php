@@ -15,6 +15,7 @@ return [
         'App\Providers\AuthServiceProvider',
         'App\Providers\FlashServiceProvider',
         'App\Providers\CsrfServiceProvider',
+        'App\Providers\ValidationRuleServicePovider',
         'App\Providers\ViewShareServiceProvider'
     ],
 

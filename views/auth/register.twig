@@ -1,0 +1,44 @@
+{% extends "layout/app.twig" %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <form action="{{ route('auth.register') }}" class="col-sm-10 col-md-8" method="POST">
+
+            <div class="form-group">
+                <label for="exampleInputName">Name</label>
+                <input class="form-control{{ errors.name ? ' is-invalid' : '' }}" id="exampleInputName" name="name" placeholder="Enter your name" type="text" value="{{ old.name }}">
+                {% if errors.name %}
+                    <small class="invalid-feedback">{{ errors.name | first }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input class="form-control{{ errors.email ? ' is-invalid' : '' }}" id="exampleInputEmail1" name="email" placeholder="Enter email" type="text" value="{{ old.email }}">
+                {% if errors.email %}
+                    <small class="invalid-feedback">{{ errors.email | first }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input class="form-control{{ errors.password ? ' is-invalid' : '' }}" id="exampleInputPassword1" name="password" placeholder="Password" type="password" value="{{ old.password }}">
+                {% if errors.password %}
+                    <small class="invalid-feedback">{{ errors.password | first }}</small>
+                {% endif %}
+
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPasswordConfirm">Password confirmation</label>
+                <input class="form-control{{ errors.password_confirmation ? ' is-invalid' : '' }}" id="exampleInputPasswordConfirm" name="password_confirmation" placeholder="Confirm your password" type="password" value="{{ old.password_confirmation }}">
+                {% if errors.password_confirmation %}
+                    <small class="invalid-feedback">{{ errors.password_confirmation | first }}</small>
+                {% endif %}
+            </div>
+
+            <input type="hidden" name="{{ csrf.key }}" value="{{ csrf.token }}">
+            <button class="btn btn-primary" type="submit">Create my account</button>
+        </form>
+    </div>
+{% endblock %}
