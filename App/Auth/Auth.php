@@ -4,6 +4,8 @@ namespace App\Auth;
 
 use Exception;
 use App\Models\User;
+use App\Cookies\Cookie;
+use App\Auth\RememberMe;
 use Doctrine\ORM\EntityManager;
 use App\Hashing\HasherInterface;
 use App\Sessions\SessionInterface;
@@ -15,15 +17,19 @@ class Auth
     private $session;
     private $hasher;
     private $user;
+    private $rememberme;
+    private $cookie;
 
-    public function __construct(EntityManager $db, SessionInterface $session, HasherInterface $hasher)
+    public function __construct(EntityManager $db, SessionInterface $session, HasherInterface $hasher, RememberMe $rememberme, Cookie $cookie)
     {
         $this->db = $db;       
         $this->session = $session;       
         $this->hasher = $hasher;       
+        $this->rememberme = $rememberme;       
+        $this->cookie = $cookie;
     }
 
-    public function attempt($email, $password)
+    public function attempt($email, $password, $rememberme = false)
     {
         $user = $this->fetchUserByEmail($email);
         if (!$user || !$this->hasValidCredentials($user, $password)) {
@@ -36,9 +42,64 @@ class Auth
 
         $this->setUserSession($user);
 
+
+        if ($rememberme) {
+            $this->rememberUser($user);
+        }
+
         return true;
 
     }
+
+    private function rememberUser($user)
+    {
+        // Set tokens inside cookies
+        list($identifier, $token) = $this->rememberme->generate();
+        $this->cookie->set('rememberme', $this->rememberme->cookieValue($identifier, $token));
+        
+        // Update user
+        $this->db->getRepository(User::class)->find($user->id)->update([
+            'remember_token' => hash('sha256', $token),
+            'remember_identifier' => $identifier
+        ]);
+        $this->db->flush();
+
+    }
+
+    public function isRemembered()
+    {
+        return $this->cookie->exists('rememberme');
+    }
+
+    public function setUserFromCookies()
+    {
+        list($identifier, $token) = $this->rememberme->separate($this->cookie->get('rememberme'));
+            $user = $this->db->getRepository(User::class)->findOneBy([
+                'remember_identifier' => $identifier
+            ]);
+
+            if (!$user) {
+                $this->cookie->clear('rememberme');
+                return;
+            }
+
+            if (!$this->rememberme->validateToken($user->remember_token, $token)) {
+
+                $this->db->getRepository(User::class)->find($user->id)->update([
+                    'remember_identifier' => null,
+                    'remember_token' => null
+                ]);
+
+                $this->db->flush();
+
+                $this->cookie->clear('rememberme');
+
+                return; 
+                
+            }
+
+            $this->setUserSession($user);
+        }
 
     public function logout()
     {

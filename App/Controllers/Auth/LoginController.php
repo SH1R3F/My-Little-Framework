@@ -36,7 +36,7 @@ class LoginController extends Controller
             'password' => ['required']
         ]);
 
-        $attempt = $this->auth->attempt($data['email'], $data['password']);
+        $attempt = $this->auth->attempt($data['email'], $data['password'], isset($data['rememberme']));
 
         if (!$attempt) {
             $this->flash->now('error', "Invalid credentials! We cannot log you in.");

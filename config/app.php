@@ -26,6 +26,7 @@ return [
         'App\middleware\ClearValidationErrors',
         'App\middleware\Authenticate',
         'App\middleware\CsrfGuard',
+        'App\middleware\AuthenticateFromCookies'
     ]
 
 ];

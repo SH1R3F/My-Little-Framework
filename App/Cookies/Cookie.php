@@ -10,7 +10,7 @@ class Cookie
     private $secure = false;
     private $httpOnly = true;
 
-    public function set($key, $value, $minutes)
+    public function set($key, $value, $minutes = 60)
     {
         $expiry = time() + ($minutes * 60);
         setcookie(
