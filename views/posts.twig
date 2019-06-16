@@ -1,0 +1,11 @@
+{% extends "layout/app.twig" %}
+
+{% block content %}
+    {% for post in posts %}
+        <div>
+            {{ post.name }}
+        </div>
+        <hr />
+    {% endfor %}
+    {{ posts.links | raw }}
+{% endblock %}

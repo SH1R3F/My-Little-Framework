@@ -12,10 +12,15 @@ class View
         $this->twig = $twig;
     }
 
+    public function make($view, $data)
+    {
+        return $this->twig->render($view, $data);
+    }
+
     public function render($response, $view, $data = [])
     {
         $response->getBody()->write(
-            $this->twig->render($view, $data)
+            $this->make($view, $data)
         );
         return $response;
     }

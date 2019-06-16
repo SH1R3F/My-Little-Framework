@@ -16,3 +16,5 @@ $router->group('/auth', function ($router) use ($container) {
     $router->post('/register', 'App\Controllers\Auth\RegisterController::register')->middleware($container->get(App\middleware\Guest::class));
 
 });
+
+$router->get('/posts', 'App\Controllers\PostsController::index')->setName('posts');
