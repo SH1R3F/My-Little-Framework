@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Auth\Auth;
 use App\Cookies\Cookie;
 use App\Auth\RememberMe;
-use Doctrine\ORM\EntityManager;
 use App\Hashing\HasherInterface;
 use App\Sessions\SessionInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
@@ -21,7 +20,6 @@ class AuthServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
         $container->share(Auth::class, function () use ($container) {
             return new Auth(
-                $container->get(EntityManager::class),
                 $container->get(SessionInterface::class),
                 $container->get(HasherInterface::class),
                 (new RememberMe()),

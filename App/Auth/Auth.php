@@ -6,23 +6,20 @@ use Exception;
 use App\Models\User;
 use App\Cookies\Cookie;
 use App\Auth\RememberMe;
-use Doctrine\ORM\EntityManager;
 use App\Hashing\HasherInterface;
 use App\Sessions\SessionInterface;
 
 class Auth
 {
 
-    private $db;
     private $session;
     private $hasher;
     private $user;
     private $rememberme;
     private $cookie;
 
-    public function __construct(EntityManager $db, SessionInterface $session, HasherInterface $hasher, RememberMe $rememberme, Cookie $cookie)
+    public function __construct(SessionInterface $session, HasherInterface $hasher, RememberMe $rememberme, Cookie $cookie)
     {
-        $this->db = $db;       
         $this->session = $session;       
         $this->hasher = $hasher;       
         $this->rememberme = $rememberme;       
@@ -31,7 +28,7 @@ class Auth
 
     public function attempt($email, $password, $rememberme = false)
     {
-        $user = $this->fetchUserByEmail($email);
+        $user = User::where('email', $email)->first();
         if (!$user || !$this->hasValidCredentials($user, $password)) {
             return false;
         }
@@ -57,13 +54,10 @@ class Auth
         list($identifier, $token) = $this->rememberme->generate();
         $this->cookie->set('rememberme', $this->rememberme->cookieValue($identifier, $token));
         
-        // Update user
-        $this->fetchUserById($user->id)->update([
+        User::find($user->id)->update([
             'remember_token' => hash('sha256', $token),
             'remember_identifier' => $identifier
         ]);
-        $this->db->flush();
-
     }
 
     public function isRemembered()
@@ -74,25 +68,23 @@ class Auth
     public function setUserFromCookies()
     {
         list($identifier, $token) = $this->rememberme->separate($this->cookie->get('rememberme'));
-            $user = $this->db->getRepository(User::class)->findOneBy([
-                'remember_identifier' => $identifier
-            ]);
+        $user = User::where('remember_identifier', $identifier)->first();
 
-            if (!$user) {
-                $this->cookie->clear('rememberme');
-                return;
-            }
-
-            if (!$this->rememberme->validateToken($user->remember_token, $token)) {
-
-                $this->clearUserRememberMe($user);
-
-                return; 
-
-            }
-
-            $this->setUserSession($user);
+        if (!$user) {
+            $this->cookie->clear('rememberme');
+            return;
         }
+
+        if (!$this->rememberme->validateToken($user->remember_token, $token)) {
+
+            $this->clearUserRememberMe($user);
+
+            return; 
+
+        }
+
+        $this->setUserSession($user);
+    }
 
     public function logout()
     {
@@ -103,34 +95,18 @@ class Auth
 
     private function clearUserTokens($user)
     {
-        $this->fetchUserById($user->id)->update([
+        User::find($user->id)->update([
             'remember_identifier' => null,
             'remember_token' => null
         ]);
-
-        $this->db->flush();
-
         $this->cookie->clear('rememberme');
     }
 
     private function rehashPassword($user, $password)
     {
-        $this->fetchUserById($user->id)->update([
+        User::find($user->id)->update([
             'password' => $this->hasher->create($password)
         ]);
-        $this->db->flush();
-    }
-
-    private function fetchUserByEmail($email)
-    {
-        return $this->db->getRepository(User::class)->findOneBy([
-            'email' => $email
-        ]);
-    }
-
-    private function fetchUserById($id)
-    {
-        return $this->db->getRepository(User::class)->find($id);
     }
 
     private function hasValidCredentials($user, $password)
@@ -155,7 +131,7 @@ class Auth
     
     public function setUserFromSession()
     {
-        $user = $this->fetchUserById($this->session->get($this->key()));
+        $user = User::find($this->session->get($this->key()));
         if (!$user) {
             throw new Exception();
         }

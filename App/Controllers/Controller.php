@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Views\View;
 use Valitron\Validator;
 use App\Exceptions\ValidationException;
 
