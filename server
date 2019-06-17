@@ -1,0 +1,8 @@
+<?php
+
+// Running local server
+// You can start the server using command "php server" in root folder
+
+echo "Your app is running on  http://127.0.0.1:8000 \n";
+echo exec("php -S localhost:8000 -t public/");
+
